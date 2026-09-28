@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Domain/Domain.csproj" Id="18638a5c-bf21-44b9-86c6-fc7ab550dcc5" />
+  <Project Path="EndPoint/EndPoint.csproj" Id="4c9c4f52-48ef-412b-8c1a-02bd68e21a16" />
+</Solution>
