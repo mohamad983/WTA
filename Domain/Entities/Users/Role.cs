@@ -1,8 +1,9 @@
-﻿using Domain.Entities.Users.Args;
+﻿using Domain.Common;
+using Domain.Entities.Users.Args;
 
 namespace Domain.Entities.Users
 {
-    public class Role
+    public class Role : BaseEntity
     {
         public Guid RoleId { get; private set; }
         public string RoleName { get; private set; }

@@ -18,9 +18,9 @@ namespace Domain.Entities.Users
 
         public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
-        public DateTime CreatedAt { get; private set; }
+        //public DateTime CreatedAt { get; private set; }
 
-        public DateTime UpdatedAt { get; private set; }
+        //public DateTime UpdatedAt { get; private set; }
         private User() { }
 
         public User(UserArgs args)
@@ -33,8 +33,7 @@ namespace Domain.Entities.Users
             FirstName = args.FirstName;
             LastName = args.LastName;
             PasswordHash = args.PasswordHash;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
+            //UpdatedAt = DateTime.UtcNow;
         }
         public static User New(UserArgs args)
         {
@@ -49,17 +48,17 @@ namespace Domain.Entities.Users
             Email = args.Email;
             _roles.Add(args.Role);
             LastName = args.LastName;
-            UpdatedAt = DateTime.UtcNow;
+            SetModified();
         }
         public void ModifyPassword(string password)
         {
             PasswordHash = password;
-            UpdatedAt = DateTime.UtcNow;
+            SetModified();
         }
         public void ModifyEmail(string email)
         {
             Email = email;
-            UpdatedAt = DateTime.UtcNow;
+            SetModified();
         }
         //val
     }
