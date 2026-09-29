@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Requests\" />
+    <Folder Include="Entities\Requests\Enums\" />
   </ItemGroup>
 
 </Project>

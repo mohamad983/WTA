@@ -1,6 +1,5 @@
 ﻿using Domain.Common;
 using Domain.Entities.Forms.Args;
-using Domain.Entities.Users;
 
 namespace Domain.Entities.Forms
 {
