@@ -1,5 +1,7 @@
 ﻿using Domain.Common;
 using Domain.Entities.Requests.Args;
+using Domain.Entities.Requests.Enums;
+using Domain.Entities.RequestTypes;
 
 namespace Domain.Entities.Requests
 {
@@ -15,10 +17,9 @@ namespace Domain.Entities.Requests
 
         public int TrackingCode { get; private set; }
 
-       
+        public StatusEnum StatusEnum { get; private set; }
 
-
-
+        public RequestType RequestType { get; private set; }
         private Request() { }
 
         public Request(RequestArgs args)
@@ -26,7 +27,7 @@ namespace Domain.Entities.Requests
             Title = args.Title;
             Code = args.Code;
             Description = args.Description;
-       
+            StatusEnum=(StatusEnum)args.StatusEnum;
         }
         public static Request New(RequestArgs args)
         {
@@ -37,7 +38,7 @@ namespace Domain.Entities.Requests
             Title = args.Title;
             Code = args.Code;
             Description = args.Description;
-           
+            StatusEnum = (StatusEnum)args.StatusEnum;
         }
 
     }

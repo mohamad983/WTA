@@ -9,6 +9,9 @@
         public int Code { get;  set; }
 
         public string Description { get;  set; }
-      
+
+        public short StatusEnum { get; set; }
+
+
     }
 }

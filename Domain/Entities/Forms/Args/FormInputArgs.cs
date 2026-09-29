@@ -2,7 +2,7 @@
 {
     public class FormInputArgs
     {
-        public string Name { get; private set; }
+        public string Name { get;  set; }
 
         public string Label { get; set; }
 
@@ -23,6 +23,8 @@
         public string Value { get; set; }
 
         public Form Form { get; set; }
+
+        public Guid FormId { get;  set; }
 
     }
 }

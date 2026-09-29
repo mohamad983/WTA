@@ -23,16 +23,15 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.RowVersion)
                                           .IsRowVersion();
 
-          
+
 
             builder.HasMany(x => x.FormInputs)
-                .WithOne(x => x.Form)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                 .WithOne(x => x.Form)
+                 .HasForeignKey(x => x.FormId)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
 
-           
-            builder.Navigation(x => x.FormInputs)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+          
         }
     }
 }

@@ -42,6 +42,8 @@ namespace Domain.Entities.Forms
 
         public Form Form { get; private set; }
 
+        public Guid FormId { get; private set; } 
+
         private readonly List<FormOption> _formOptions = [];
         //public byte[] RowVersion { get; private set; } = null!;
 
@@ -53,6 +55,7 @@ namespace Domain.Entities.Forms
         {
             FormInputId=Guid.NewGuid();
             Name = args.Name;
+            FormId = args.FormId;
             Label = args.Label;
             InputTypes = (InputTypesEnum)args.InputTypes;
             ValueDataType = (ValueDataTypeEnum)args.ValueDataType;
@@ -84,6 +87,7 @@ namespace Domain.Entities.Forms
         {
             Name = args.Name;
             Label = args.Label;
+            FormId = args.FormId;
             InputTypes = (InputTypesEnum)args.InputTypes;
             ValueDataType = (ValueDataTypeEnum)args.ValueDataType;
             IsRequired = args.IsRequired;
