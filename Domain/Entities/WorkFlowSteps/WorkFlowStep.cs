@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.RequestTypes;
+using Domain.Entities.StepFunctions;
 using Domain.Entities.Users;
 using Domain.Entities.WorkFlowSteps.Args;
 using Domain.Entities.WorkFlowStepTransitions;
@@ -23,6 +24,8 @@ namespace Domain.Entities.WorkFlowSteps
 
         private readonly List<WorkFlowStepTransition> _transitions = [];
         public IReadOnlyCollection<WorkFlowStepTransition> transitions => _transitions.AsReadOnly();
+        private readonly List<StepFunction> _functions = [];
+        public IReadOnlyCollection<StepFunction> Functions => _functions.AsReadOnly();
         private WorkFlowStep()
         {
 

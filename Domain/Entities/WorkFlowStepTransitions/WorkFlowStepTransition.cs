@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.TransitionFunctions;
 using Domain.Entities.WorkFlowSteps;
 using Domain.Entities.WorkFlowStepTransitions.Args;
 using System;
@@ -14,6 +15,8 @@ namespace Domain.Entities.WorkFlowStepTransitions
         public WorkFlowStep NextStep { get; private set; } = null!;
         public Guid CurrentStepId { get; private set; }
         public WorkFlowStep CurrentStep { get; private set; } = null!;
+        private List<TransitionFunction> _functions = [];
+        public IReadOnlyCollection<TransitionFunction> Functions => _functions.AsReadOnly();
         private WorkFlowStepTransition()
         {
 
