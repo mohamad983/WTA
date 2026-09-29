@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\RequestLogs\Enums\" />
+    <Folder Include="Entities\RequestLogs\Args\" />
+  </ItemGroup>
+
 </Project>
