@@ -20,7 +20,9 @@ namespace Domain.Entities.WorkFlowSteps
         public User? ApproverUser { get; private set; }
         public Guid ApproverRoleId { get; private set; }
         public Role ApproverRole { get; private set; } = null!;
-        private readonly List<WorkFlowStepTransition> _transitions;
+
+        private readonly List<WorkFlowStepTransition> _transitions = [];
+        public IReadOnlyCollection<WorkFlowStepTransition> transitions => _transitions.AsReadOnly();
         private WorkFlowStep()
         {
 
@@ -49,6 +51,16 @@ namespace Domain.Entities.WorkFlowSteps
         public void ModifyStepOrder (int stepOrder)
         {
             this.StepOrder = stepOrder;
+            SetModified();
+        }
+        public void AddTransaction(WorkFlowStepTransition transition)
+        {
+            _transitions.Add(transition);
+            SetModified();
+        }
+        public void DeleteTransition(WorkFlowStepTransition transition)
+        {
+            _transitions.Remove(transition);
             SetModified();
         }
     }

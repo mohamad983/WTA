@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("RequestTypes");
             
-            builder.HasKey(rt => rt.Id);
+            builder.HasKey(rt => rt.RequestTypeGuid);
             
             builder.Property(rt => rt.CreatedAt)
                 .IsRequired();

@@ -33,6 +33,10 @@
             LastModifiedAt = DateTime.UtcNow;
             LastModifiedBy = modifiedBy;
         }
+        public void SetModifiedBy(string modifiedBy)
+        {
+            LastModifiedBy = modifiedBy;
+        }
 
         public void MarkAsDeleted(string? deletedBy = null)
         {
