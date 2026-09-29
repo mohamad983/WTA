@@ -14,12 +14,12 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.Label).HasMaxLength(500);
             builder.Property(x => x.RowVersion)
                                       .IsRowVersion();
-            builder.HasMany(x => x.FormOptions)
-                .WithOne(x => x.FormInput)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(x => x.FormOptions)
-               .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.HasMany(x => x.FormOptions)
+                  .WithOne(x => x.FormInput)
+                  .HasForeignKey(x => x.FormInputId)
+                  .IsRequired()
+                  .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

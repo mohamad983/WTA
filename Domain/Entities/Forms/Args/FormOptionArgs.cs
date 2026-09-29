@@ -7,5 +7,7 @@
         public string Value { get;  set; }
 
         public FormInput FormInput { get;  set; }
+
+        public int FormInputId { get;  set; }
     }
 }

@@ -9,13 +9,13 @@ namespace Domain.Entities.Forms
     public class FormOption:BaseEntity
     {
         public Guid FormOptionId { get; private set; }
-
-
         public string Label { get; private set; }
 
         public string Value { get; private set; }
 
         public FormInput FormInput { get; private set; }
+
+        public int FormInputId { get; private set; }
 
         private FormOption() { }
 
@@ -25,6 +25,7 @@ namespace Domain.Entities.Forms
             Label = args.Label;
             Value = args.Value;
             FormInput = args.FormInput;
+            FormInputId = args.FormInputId;
         }
         public static FormOption New(FormOptionArgs args)
         {
@@ -37,6 +38,7 @@ namespace Domain.Entities.Forms
             Label = args.Label;
             Value = args.Value;
             FormInput = args.FormInput;
+            FormInputId = args.FormInputId;
         }
 
 
