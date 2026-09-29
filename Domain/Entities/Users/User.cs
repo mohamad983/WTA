@@ -5,7 +5,7 @@ namespace Domain.Entities.Users
 {
     public class User: BaseEntity
     {
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; private set; } //primary key
         public string UserName { get; private set; }
         public string FullName { get; private set; }
         public string FirstName { get; private set; }
@@ -14,7 +14,7 @@ namespace Domain.Entities.Users
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         private readonly List<Role> _roles = [];
-        public byte[] RowVersion { get; private set; } = null!;
+        //public byte[] RowVersion { get; private set; } = null!;
 
         public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
@@ -58,6 +58,21 @@ namespace Domain.Entities.Users
         public void ModifyEmail(string email)
         {
             Email = email;
+            SetModified();
+        }
+        public void ModifyUserName(string userName)
+        {
+            UserName = userName;
+            SetModified();
+        }
+        public void ModifyFirstName(string firstName)
+        {
+            FirstName = firstName;
+            SetModified();
+        }
+        public void ModiftLastName (string lastName)
+        {
+            LastName = lastName;
             SetModified();
         }
         //val
