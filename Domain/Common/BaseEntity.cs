@@ -1,37 +1,33 @@
 ﻿namespace Domain.Common
 {
-    public abstract class BaseEntity<TKey> where TKey : IEquatable<TKey>
+    public abstract class BaseEntity
     {
-        public TKey Id { get; protected set; } = default!;
-
-     
+        // Audit Logs
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public string? CreatedBy { get; private set; }
         public DateTime? LastModifiedAt { get; private set; }
         public string? LastModifiedBy { get; private set; }
 
-        
+        // Soft Delete
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedAt { get; private set; }
         public string? DeletedBy { get; private set; }
 
+        // Concurrency
         public byte[] RowVersion { get; private set; } = [];
 
-   
+        // Domain Events
         private readonly List<object> _domainEvents = [];
         public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
 
         public void AddDomainEvent(object domainEvent)
         {
+            ArgumentNullException.ThrowIfNull(domainEvent);
             _domainEvents.Add(domainEvent);
         }
 
-        public void ClearDomainEvents()
-        {
-            _domainEvents.Clear();
-        }
+        public void ClearDomainEvents() => _domainEvents.Clear();
 
-    
         public void SetModified(string? modifiedBy = null)
         {
             LastModifiedAt = DateTime.UtcNow;
@@ -43,60 +39,6 @@
             IsDeleted = true;
             DeletedAt = DateTime.UtcNow;
             DeletedBy = deletedBy;
-        }
-
-        #region Entity Equality (برابری موجودیت‌ها بر اساس Id)
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is not BaseEntity<TKey> other)
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            if (GetType() != other.GetType())
-                return false;
-
-            if (EqualityComparer<TKey>.Default.Equals(Id, default!))
-                return false;
-
-            return EqualityComparer<TKey>.Default.Equals(Id, other.Id);
-        }
-
-        public override int GetHashCode()
-        {
-            return (GetType().ToString() + Id).GetHashCode();
-        }
-
-        public static bool operator ==(BaseEntity<TKey>? left, BaseEntity<TKey>? right)
-        {
-            if (left is null && right is null)
-                return true;
-
-            if (left is null || right is null)
-                return false;
-
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(BaseEntity<TKey>? left, BaseEntity<TKey>? right)
-        {
-            return !(left == right);
-        }
-
-        #endregion
-    }
-    public abstract class BaseEntity : BaseEntity<Guid>
-    {
-        protected BaseEntity()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        protected BaseEntity(Guid id)
-        {
-            Id = id;
         }
     }
 }

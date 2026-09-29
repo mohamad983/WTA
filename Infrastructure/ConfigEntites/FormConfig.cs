@@ -1,0 +1,38 @@
+﻿using Domain.Entities.Forms;
+using Domain.Entities.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructure.ConfigEntites
+{
+    public class FormConfig : IEntityTypeConfiguration<Form>
+    {
+
+        public void Configure(EntityTypeBuilder<Form> builder)
+        {
+            builder.ToTable("Forms");
+
+            builder.HasKey(x => x.FormId);
+            builder.Property(x => x.FormId)
+                .ValueGeneratedNever();
+
+            builder.Property(x => x.Title)
+               .IsRequired()
+               .HasMaxLength(100);
+
+            builder.Property(x => x.RowVersion)
+                                          .IsRowVersion();
+
+          
+
+            builder.HasMany(x => x.FormInputs)
+                .WithOne(x => x.Form)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+           
+            builder.Navigation(x => x.FormInputs)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+        }
+    }
+}
