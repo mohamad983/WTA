@@ -1,16 +1,18 @@
 ﻿using Domain.Common;
-using Domain.Entities.RequestType.Args;
-using Domain.Entities.WorkFlowStep;
+using Domain.Entities.RequestTypes.Args;
+using Domain.Entities.WorkFlowSteps;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities.RequestType
+namespace Domain.Entities.RequestTypes
 {
     public class RequestType : BaseEntity
     {
+        public Guid RequestTypeGuid { get; private set; } = new Guid();
         public string Title { get; private set; } = string.Empty;
-        public ICollection<WorkFlowStep.WorkFlowStep> Steps { get; private set; } = null!;
+        private readonly List<WorkFlowStep> _steps = [];
+        public IReadOnlyCollection<WorkFlowStep> Steps => _steps.AsReadOnly();
         public int Code { get; private set; }
         public string Description { get; private set; } = string.Empty;
         public void ModifyRequestTypeTitle (string requestTypeTitle)
@@ -18,14 +20,14 @@ namespace Domain.Entities.RequestType
             Title = requestTypeTitle;
             SetModified();
         }
-        public void AddStep(WorkFlowStep.WorkFlowStep step)
+        public void AddStep(WorkFlowStep step)
         {
-            Steps.Add(step);
+            _steps.Add(step);
             SetModified();
         }
-        public void RemoveStep(WorkFlowStep.WorkFlowStep step)
+        public void RemoveStep(WorkFlowStep step)
         {
-            Steps.Remove(step);
+            _steps.Remove(step);
             SetModified();
         }
         public void ModifyDescription(string description)
