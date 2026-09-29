@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Domain.Entities.RequestType.Args
+namespace Domain.Entities.RequestTypes.Args
 {
     public class RequestTypeArgs
     {
