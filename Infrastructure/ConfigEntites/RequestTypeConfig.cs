@@ -36,8 +36,8 @@ namespace Infrastructure.ConfigEntites
             builder.Property(rt => rt.IsDeleted)
                 .IsRequired();
 
-            builder.Property(rt => rt.LastModifiedAt)
-                .IsRequired();
+            /*builder.Property(rt => rt.LastModifiedAt)
+                .IsRequired();*/
 
             builder.Property(rt => rt.RowVersion)
                 .IsRowVersion();
@@ -46,7 +46,8 @@ namespace Infrastructure.ConfigEntites
                 .WithOne(wfs => wfs.RequestType)
                 .HasForeignKey(wfs => wfs.RequestTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            builder.Navigation(x => x.Steps)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }
