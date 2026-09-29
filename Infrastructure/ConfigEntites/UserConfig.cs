@@ -54,7 +54,7 @@ namespace Infrastructure.ConfigEntites
            
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
-            builder.Property(x => x.UpdatedAt)
+            builder.Property(x => x.LastModifiedAt)
                 .IsRequired();
 
             builder.Property(x => x.RowVersion)
