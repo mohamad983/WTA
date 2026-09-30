@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities.Permissions
+namespace Domain.Common
 {
     public static class AppPermissions
     {

@@ -8,6 +8,7 @@ namespace Domain.Entities.Users
     public class Role : BaseEntity
     {
         //public Guid RoleId { get; private set; }
+        public bool IsSystem { get; private set; }
         public string RoleName { get; private set; } = string.Empty;
 
         public int RoleImportance { get; private set; }
@@ -23,6 +24,7 @@ namespace Domain.Entities.Users
         public Role(RoleArgs args)
         {
             //RoleId = Guid.NewGuid();
+            IsSystem = args.isSystem;
             RoleName=args.RoleName;
             RoleImportance=args.RoleImportance;
             //_user.Add(args.User);
@@ -43,6 +45,10 @@ namespace Domain.Entities.Users
         }
         public void RemovePermission(Guid permissionId)
         {
+            if (IsSystem == true)
+            {
+                throw new InvalidOperationException("You cannot take away the permissions of a system admin!");
+            }
             var permission = _permissions.FirstOrDefault(rp => rp.PermissionId == permissionId);
             if (permission == null)
             {

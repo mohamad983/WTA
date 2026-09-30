@@ -7,6 +7,7 @@
         public int RoleImportance { get;  set; }
 
         public User User { get; set; }
+        public bool isSystem {  get; set; }
 
     }
 }

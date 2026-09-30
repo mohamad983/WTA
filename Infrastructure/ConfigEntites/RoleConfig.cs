@@ -34,6 +34,9 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.IsDeleted)
                 .IsRequired();
 
+            builder.Property(x => x.IsSystem)
+                .IsRequired();
+
             builder.HasMany(x => x.Permissions)
                 .WithOne(pr => pr.Role)
                 .HasForeignKey(x => x.RoleId)
