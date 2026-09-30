@@ -32,6 +32,8 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.RowVersion)
                 .IsRowVersion();
 
+            builder.Ignore(x => x.DomainEvents);
+
             builder.HasOne(x => x.CurrentStep)
                 .WithMany(st => st.transitions)
                 .HasForeignKey(x => x.CurrentStepId)
@@ -41,6 +43,14 @@ namespace Infrastructure.ConfigEntites
                 .WithMany()
                 .HasForeignKey(x => x.NextStepId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(x => x.Functions)
+                .WithOne(m => m.Transition)
+                .HasForeignKey(m => m.TransitionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Navigation(x => x.Functions)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
             //builder.Property(x => x.)
         }
     }
