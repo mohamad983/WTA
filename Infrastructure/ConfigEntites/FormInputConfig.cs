@@ -9,8 +9,8 @@ namespace Infrastructure.ConfigEntites
         public void Configure(EntityTypeBuilder<FormInput> builder)
         {
             builder.ToTable("FormInputs");
-            builder.HasKey(x => x.FormInputId);
-            builder.Property(x => x.FormInputId).ValueGeneratedNever();
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedNever();
             builder.Property(x => x.Label).HasMaxLength(500);
             builder.Property(x => x.RowVersion)
                                       .IsRowVersion();

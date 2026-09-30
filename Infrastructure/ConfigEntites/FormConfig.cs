@@ -12,8 +12,8 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("Forms");
 
-            builder.HasKey(x => x.FormId);
-            builder.Property(x => x.FormId)
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
                 .ValueGeneratedNever();
 
             builder.Property(x => x.Title)

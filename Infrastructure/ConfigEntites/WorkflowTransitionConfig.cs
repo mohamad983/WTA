@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("WorkflowStepTransitions");
 
-            builder.HasKey(x => x.WorkFlowStepTransitionId);
+            builder.HasKey(x => x.Id);
 
             builder.Ignore(x => x.DomainEvents);
 

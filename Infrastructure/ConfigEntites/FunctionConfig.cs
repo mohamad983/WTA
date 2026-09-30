@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("Functions");
 
-            builder.HasKey(x => x.FunctionId);
+            builder.HasKey(x => x.Id);
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();

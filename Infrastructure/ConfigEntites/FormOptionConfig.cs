@@ -9,7 +9,7 @@ namespace Infrastructure.ConfigEntites
         public void Configure(EntityTypeBuilder<FormOption> builder)
         {
             builder.ToTable("FormOptions");
-            builder.HasKey(x => x.FormOptionId);
+            builder.HasKey(x => x.Id);
             builder.Property(x => x.Value).HasMaxLength(500);
             builder.Property(x => x.Label).HasMaxLength(500);
             builder.Property(x => x.RowVersion)

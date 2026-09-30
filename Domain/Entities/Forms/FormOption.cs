@@ -8,12 +8,12 @@ namespace Domain.Entities.Forms
     /// </summary>
     public class FormOption:BaseEntity
     {
-        public Guid FormOptionId { get; private set; }
-        public string Label { get; private set; }
+        //public Guid FormOptionId { get; private set; }
+        public string Label { get; private set; } = string.Empty;
 
-        public string Value { get; private set; }
+        public string Value { get; private set; } = string.Empty;
 
-        public FormInput FormInput { get; private set; }
+        public FormInput FormInput { get; private set; } = null!;
 
         public int FormInputId { get; private set; }
 
@@ -21,7 +21,7 @@ namespace Domain.Entities.Forms
 
         public FormOption(FormOptionArgs args)
         {
-            FormOptionId=Guid.NewGuid();
+            //FormOptionId=Guid.NewGuid();
             Label = args.Label;
             Value = args.Value;
             FormInput = args.FormInput;

@@ -5,7 +5,7 @@ namespace Domain.Entities.Users
 {
     public class User: BaseEntity
     {
-        public Guid UserId { get; private set; } //primary key
+        //public Guid UserId { get; private set; } //primary key
         public string UserName { get; private set; }
         public string FullName { get; private set; }
         public string FirstName { get; private set; }
@@ -25,7 +25,7 @@ namespace Domain.Entities.Users
 
         public User(UserArgs args)
         {
-            UserId=Guid.NewGuid();
+            //UserId=Guid.NewGuid();
             UserName=args.UserName;
             _roles.Add(args.Role);
             FullName = args.FullName;
@@ -74,6 +74,14 @@ namespace Domain.Entities.Users
         {
             LastName = lastName;
             SetModified();
+        }
+        public void AddtoRole(Role role)
+        {
+            _roles.Add(role);
+        }
+        public void RemoveFromRole(Role role)
+        {
+            _roles.Remove(role);
         }
         //val
     }

@@ -5,8 +5,8 @@ namespace Domain.Entities.Users
 {
     public class Role : BaseEntity
     {
-        public Guid RoleId { get; private set; }
-        public string RoleName { get; private set; }
+        //public Guid RoleId { get; private set; }
+        public string RoleName { get; private set; } = string.Empty;
 
         public int RoleImportance { get; private set; }
 
@@ -18,12 +18,17 @@ namespace Domain.Entities.Users
 
         public Role(RoleArgs args)
         {
-            RoleId = Guid.NewGuid();
+            //RoleId = Guid.NewGuid();
             RoleName=args.RoleName;
             RoleImportance=args.RoleImportance;
-            _user.Add(args.User);
+            //_user.Add(args.User);
         }
 
+        public void Modify(RoleArgs args)
+        {
+            RoleName = args.RoleName;
+            RoleImportance = args.RoleImportance;
+        }
         public static Role New(RoleArgs args)
         {
             return new Role(args);

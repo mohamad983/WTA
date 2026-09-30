@@ -10,7 +10,7 @@ namespace Domain.Entities.RequestLogs
 {
     public class RequestLog : BaseEntity
     {
-        public Guid LogId { get; private set; } = new Guid();
+        //public Guid LogId { get; private set; } = new Guid();
         public string LogMessage { get; private set; } = string.Empty;
         public Guid UserId { get; private set; }
         public User User { get; private set; } = null!;
@@ -36,7 +36,7 @@ namespace Domain.Entities.RequestLogs
         }*/
         public void MakeMessage()
         {
-
+            
         }
     }
 }

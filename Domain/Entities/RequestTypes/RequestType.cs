@@ -6,7 +6,7 @@ namespace Domain.Entities.RequestTypes
 {
     public class RequestType : BaseEntity
     {
-        public Guid RequestTypeGuid { get; private set; } = new Guid();
+        //public Guid RequestTypeGuid { get; private set; } = new Guid();
         public string Title { get; private set; } = string.Empty;
         private readonly List<WorkFlowStep> _steps = [];
         public IReadOnlyCollection<WorkFlowStep> Steps => _steps.AsReadOnly();

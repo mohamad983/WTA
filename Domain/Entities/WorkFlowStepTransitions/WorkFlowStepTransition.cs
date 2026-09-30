@@ -10,7 +10,7 @@ namespace Domain.Entities.WorkFlowStepTransitions
 {
     public class WorkFlowStepTransition : BaseEntity
     {
-        public Guid WorkFlowStepTransitionId { get; private set; } = new Guid();
+        //public Guid WorkFlowStepTransitionId { get; private set; } = new Guid();
         public Guid NextStepId {  get; private set; }
         public WorkFlowStep NextStep { get; private set; } = null!;
         public Guid CurrentStepId { get; private set; }

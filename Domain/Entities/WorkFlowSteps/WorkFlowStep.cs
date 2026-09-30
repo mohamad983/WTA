@@ -12,7 +12,7 @@ namespace Domain.Entities.WorkFlowSteps
 {
     public class WorkFlowStep : BaseEntity
     {
-        public Guid WorkFlowStepId { get; private set; } = new Guid();
+        //public Guid WorkFlowStepId { get; private set; } = new Guid();
         public Guid RequestTypeId { get; private set; }
         public RequestType RequestType { get; private set; } = null!;
         public string Title { get; private set; } = string.Empty;

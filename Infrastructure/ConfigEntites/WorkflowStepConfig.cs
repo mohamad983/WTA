@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("WorkFlowSteps");
 
-            builder.HasKey(x => x.WorkFlowStepId);
+            builder.HasKey(x => x.Id);
             
             builder.Property(wfs => wfs.ApproverRoleId)
                 .IsRequired();

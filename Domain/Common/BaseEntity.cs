@@ -1,7 +1,9 @@
 ﻿namespace Domain.Common
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity 
     {
+        //Id
+        public Guid Id { get; protected set; } = Guid.NewGuid();
         // Audit Logs
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public string? CreatedBy { get; private set; }
@@ -38,11 +40,17 @@
             LastModifiedBy = modifiedBy;
         }
 
-        public void MarkAsDeleted(string? deletedBy = null)
+        public virtual void MarkAsDeleted(string? deletedBy = null)
         {
             IsDeleted = true;
             DeletedAt = DateTime.UtcNow;
             DeletedBy = deletedBy;
+        }
+        public void Restore()
+        {
+            IsDeleted = false;
+            DeletedAt = null;
+            DeletedBy = null;
         }
     }
 }

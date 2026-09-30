@@ -10,9 +10,9 @@ namespace Domain.Entities.Functions
 {
     public class Function : BaseEntity
     {
-        public Guid FunctionId { get; private set; } = new Guid();
-        public string Title { get; set; } = string.Empty;
-        public string Script { get; set; } = string.Empty;
+        //public Guid FunctionId { get; private set; } = new Guid();
+        public string Title { get; private set; } = string.Empty;
+        public string Script { get; private set; } = string.Empty;
         private readonly List<StepFunction> _steps = [];
         public IReadOnlyCollection<StepFunction> Steps => _steps.AsReadOnly();
         private readonly List<TransitionFunction> _transitions = [];
