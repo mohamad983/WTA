@@ -32,6 +32,8 @@ namespace Infrastructure.ConfigEntites
             builder.HasIndex(x => x.Key)
                 .IsUnique();
 
+            builder.Property(x => x.Kind).IsRequired().HasConversion<string>().HasMaxLength(30);
+
             builder.Property(x => x.GroupName)
                 .HasMaxLength(300);
 
