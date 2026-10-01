@@ -7,13 +7,13 @@ namespace Domain.Entities.Requests
 {
     public class Request:BaseEntity
     {
-        public Guid RequestId { get; private set; }
+        //public Guid RequestId { get; private set; }
 
-        public string Title { get; private set; }
+        public string Title { get; private set; } = string.Empty;
 
         public int Code { get; private set; }
 
-        public string Description { get; private set; }
+        public string Description { get; private set; } = string.Empty;
 
         public int TrackingCode { get; private set; }
 

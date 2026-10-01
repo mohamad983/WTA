@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("RequestTypes");
             
-            builder.HasKey(rt => rt.RequestTypeGuid);
+            builder.HasKey(rt => rt.Id);
             
             builder.Property(rt => rt.CreatedAt)
                 .IsRequired();
@@ -35,6 +35,8 @@ namespace Infrastructure.ConfigEntites
 
             builder.Property(rt => rt.IsDeleted)
                 .IsRequired();
+
+            builder.Ignore(x => x.DomainEvents);
 
             /*builder.Property(rt => rt.LastModifiedAt)
                 .IsRequired();*/

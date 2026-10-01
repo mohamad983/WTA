@@ -13,7 +13,7 @@ namespace Infrastructure.ConfigEntites
         {
             builder.ToTable("WorkFlowSteps");
 
-            builder.HasKey(x => x.WorkFlowStepId);
+            builder.HasKey(x => x.Id);
             
             builder.Property(wfs => wfs.ApproverRoleId)
                 .IsRequired();
@@ -56,8 +56,16 @@ namespace Infrastructure.ConfigEntites
                 .WithMany()
                 .HasForeignKey(x => x.ApproverUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(x => x.Functions)
+                .WithOne(m => m.Step)
+                .HasForeignKey(m => m.StepId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             builder.Navigation(x => x.transitions)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            
+            builder.Navigation(x => x.Functions)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

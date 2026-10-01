@@ -1,7 +1,11 @@
-﻿namespace Domain.Common
+﻿using Domain.Common.Interfaces;
+
+namespace Domain.Common
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity 
     {
+        //Id
+        public Guid Id { get; protected set; } = Guid.NewGuid();
         // Audit Logs
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public string? CreatedBy { get; private set; }
@@ -17,10 +21,10 @@
         public byte[] RowVersion { get; private set; } = [];
 
         // Domain Events
-        private readonly List<object> _domainEvents = [];
-        public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
+        private readonly List<IDomainEvent> _domainEvents = [];
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-        public void AddDomainEvent(object domainEvent)
+        public void AddDomainEvent(IDomainEvent domainEvent)
         {
             ArgumentNullException.ThrowIfNull(domainEvent);
             _domainEvents.Add(domainEvent);
@@ -38,11 +42,17 @@
             LastModifiedBy = modifiedBy;
         }
 
-        public void MarkAsDeleted(string? deletedBy = null)
+        public virtual void MarkAsDeleted(string? deletedBy = null)
         {
             IsDeleted = true;
             DeletedAt = DateTime.UtcNow;
             DeletedBy = deletedBy;
+        }
+        public void Restore()
+        {
+            IsDeleted = false;
+            DeletedAt = null;
+            DeletedBy = null;
         }
     }
 }

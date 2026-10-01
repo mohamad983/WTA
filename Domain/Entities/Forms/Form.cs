@@ -5,7 +5,7 @@ namespace Domain.Entities.Forms
 {
     public class Form :BaseEntity
     {
-        public Guid FormId { get; private set; }
+        //public Guid FormId { get; private set; }
         /// <summary>
         /// ما اینو توی هندلر در صورت مادیفای شدن فورم یکی به عددش اضافه میکنیم تا بتونیم ورژن های مختلف فورم رو جدا کنیم
         /// </summary>
@@ -24,7 +24,7 @@ namespace Domain.Entities.Forms
 
         public  Form(FormArgs args)
         {
-            FormId=Guid.NewGuid();
+            //FormId=Guid.NewGuid();
             VersionNumber=args.VersionNumber;
             Title=args.Title;
             

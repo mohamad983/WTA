@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Forms\Events\" />
+    <Folder Include="Entities\Functions\Events\" />
+    <Folder Include="Entities\Permissions\Events\" />
+    <Folder Include="Entities\RequestLogs\Enums\" />
+    <Folder Include="Entities\RequestLogs\Events\" />
+    <Folder Include="Entities\Users\Events\" />
+    <Folder Include="Entities\WorkFlowSteps\Events\" />
+    <Folder Include="Entities\WorkFlowStepTransitions\Events\" />
+  </ItemGroup>
+
 </Project>

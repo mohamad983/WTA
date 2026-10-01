@@ -9,8 +9,8 @@ namespace Infrastructure.ConfigEntites
         public void Configure(EntityTypeBuilder<Request> builder)
         {
             builder.ToTable("Requests");
-            builder.HasKey(x => x.RequestId);
-            builder.Property(x=>x.RequestId).ValueGeneratedNever();
+            builder.HasKey(x => x.Id);
+            builder.Property(x=>x.Id).ValueGeneratedNever();
 
             builder.Property(x => x.Title)
               .IsRequired()
