@@ -2,6 +2,8 @@
 using Domain.Entities.Requests.Args;
 using Domain.Entities.Requests.Enums;
 using Domain.Entities.RequestTypes;
+using Domain.Entities.Users;
+using static Domain.Common.AppPermissions;
 
 namespace Domain.Entities.Requests
 {
@@ -22,6 +24,11 @@ namespace Domain.Entities.Requests
         public RequestType RequestType { get; private set; }
 
         public int RequestTypeId { get; private set; }
+
+        private readonly List<RequestValue> _requestValue = [];
+        //public byte[] RowVersion { get; private set; } = null!;
+
+        public IReadOnlyCollection<RequestValue> RequestValues => _requestValue.AsReadOnly();
         private Request() { }
 
         public Request(RequestArgs args)
@@ -35,6 +42,14 @@ namespace Domain.Entities.Requests
         public static Request New(RequestArgs args)
         {
             return new Request(args);
+        }
+        public void AddRequestValue(RequestValue values)
+        {
+            _requestValue.Add(values);
+        }
+        public void ClearRequestValue()
+        {
+            _requestValue.Clear();
         }
         public void Modify(RequestArgs args)
         {

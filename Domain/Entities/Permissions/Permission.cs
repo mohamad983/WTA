@@ -81,5 +81,7 @@ namespace Domain.Entities.Permissions
             DisplayName = displayName.Trim();
             GroupName = groupName?.Trim();
         }
+        
+        
     }
 }

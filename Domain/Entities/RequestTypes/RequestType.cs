@@ -33,17 +33,24 @@ namespace Domain.Entities.RequestTypes
             _request.Add(request);
             SetModified();
         }
-        public void RemoveStep()
-        public void Modify(RequestTypeArgs args)
+        public void RemoveRequest()
         {
             _request.Clear();
-            SetModified();
+        }
+        public void Modify(RequestTypeArgs args)
+        {
+            
             Title = args.Title;
             Description = args.Description;
+            SetModified();
         }
         public void AddStep(WorkFlowStep step)
         {
             _steps.Add(step);
+        }
+        public void RemoveStep()
+        {
+            _steps.Clear();
         }
         public void AddAction(WorkFlowAction action)
         {
