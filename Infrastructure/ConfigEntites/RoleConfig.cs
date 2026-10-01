@@ -21,7 +21,11 @@ namespace Infrastructure.ConfigEntites
 
             builder.Property(x => x.RoleName)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(100);
+
+            builder.HasIndex(x => x.RoleName)
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();

@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities.Users.Args;
+using Domain.Entities.Users.Events;
 
 namespace Domain.Entities.Users
 {
@@ -23,9 +24,9 @@ namespace Domain.Entities.Users
             {
                 throw new DomainException("User Name is invalid!");
             }
-            if (string.IsNullOrWhiteSpace(args.Email))
+            if (string.IsNullOrWhiteSpace(args.Email) || !args.Email.Contains('@'))
             {
-                throw new DomainException("Email is invalid!");
+                throw new DomainException("A valid email is required.");
             }
             if (string.IsNullOrWhiteSpace(args.FirstName))
             {
@@ -50,23 +51,15 @@ namespace Domain.Entities.Users
         {
             return new User(args);
         }
-        public void AddRole(Role role)
-        {
-            _roles.Add(role);
-        }
-        public void ClearRole(Role role)
-        {
-            _roles.Clear();
-        }
         public void Modify(UserArgs args)
         {
             if(string.IsNullOrWhiteSpace(args.UserName))
             {
                 throw new DomainException("User Name is invalid!");
             }
-            if (string.IsNullOrWhiteSpace(args.Email))
+            if (string.IsNullOrWhiteSpace(args.Email) || !args.Email.Contains('@'))
             {
-                throw new DomainException("Email is invalid!");
+                throw new DomainException("A valid email is required.");
             }
             if (string.IsNullOrWhiteSpace(args.FirstName))
             {
@@ -87,6 +80,14 @@ namespace Domain.Entities.Users
             PasswordHash = args.PasswordHash;
             FullName = $"{FirstName} {LastName}";
         }
+        public void SetPassWordHash(string passwordHash)
+        {
+            if ( string.IsNullOrWhiteSpace(passwordHash))
+            {
+                throw new DomainException("Password Hash is invalid!");
+            }
+            PasswordHash = passwordHash;
+        }
         public void AssignRole(Role role)
         {
             ArgumentNullException.ThrowIfNull(role);
@@ -94,9 +95,10 @@ namespace Domain.Entities.Users
             if (role.IsDeleted)
                 throw new DomainException("A deleted role can't be assigned.");
             if (_roles.Any(r => r.Id == role.Id))
-                return;                               // already assigned
+                return;                               
 
             _roles.Add(role);
+            AddDomainEvent(new UserRolesChanged(Id));
         }
         public void RemoveRole(Guid roleId)
         {
@@ -104,6 +106,7 @@ namespace Domain.Entities.Users
             if (role is null) return;
 
             _roles.Remove(role);
+            AddDomainEvent(new UserRolesChanged(Id));
         }
     }
 }

@@ -17,10 +17,5 @@ namespace Domain.Common
 
             ];
 
-        public static class PermissionKeys
-        {
-            public static string ForRequestType(Guid requestTypeId, string actionCode)
-                => $"RequestType.{requestTypeId:N}.{actionCode}";
-        }
     }
 }

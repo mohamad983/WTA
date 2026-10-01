@@ -1,5 +1,4 @@
 ﻿using Domain.Common;
-using Domain.Entities.Permissions.Enums;
 using Domain.Entities.RequestTypes;
 using System;
 using System.Collections.Generic;
@@ -17,6 +16,7 @@ namespace Domain.Entities.Permissions
         public string DisplayName { get; private set; } = string.Empty;
         public string? GroupName { get; private set; } = string.Empty;
         public Guid? RequestTypeId { get; private set; }
+        public Guid? WorkFlowActionId {  get; private set; }
         public PermissionKind Kind { get; private set; }
         public string? ActionCode { get; private set; }
         public string? ActionTitle { get; private set; }
@@ -26,6 +26,11 @@ namespace Domain.Entities.Permissions
         }
         public static Permission CreateStatic(string key, string displayName, string? groupName = null)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new DomainException("Permission key is required.");
+            if (string.IsNullOrWhiteSpace(displayName))
+                throw new DomainException("Permission display name is required.");
+
             return new Permission
             {
                 Key = key.Trim(),
@@ -34,54 +39,69 @@ namespace Domain.Entities.Permissions
                 Kind = PermissionKind.Static
             };
         }
-        public static Permission CreateForRequestType(Guid requestTypeId, string requestTypeTitle,string actionCode,string actionTitle)
+        public static Permission CreateForAction(
+            Guid requestTypeId, string requestTypeTitle,
+            Guid actionId, string actionCode, string actionTitle)
         {
             if (requestTypeId == Guid.Empty)
-                throw new ArgumentException("Request type id is required.", nameof(requestTypeId));
+                throw new DomainException("Request type id is required.");
+            if (actionId == Guid.Empty)
+                throw new DomainException("Action id is required.");
             if (string.IsNullOrWhiteSpace(requestTypeTitle))
-                throw new ArgumentException("Request type title is required.", nameof(requestTypeTitle));
-            if (string.IsNullOrWhiteSpace(actionCode) || !ActionCodePattern.IsMatch(actionCode.Trim()))
-                throw new ArgumentException(
-                    "Action code must start with a letter and contain only letters and digits (max 50).",
-                    nameof(actionCode));
+                throw new DomainException("Request type title is required.");
+            if (string.IsNullOrWhiteSpace(actionCode))
+                throw new DomainException("Action code is required.");
             if (string.IsNullOrWhiteSpace(actionTitle))
-                throw new ArgumentException("Action title is required.", nameof(actionTitle));
-            var requestType = requestTypeTitle.Trim();
+                throw new DomainException("Action title is required.");
+
             var code = actionCode.Trim();
+            var requestType = requestTypeTitle.Trim();
             var action = actionTitle.Trim();
+
             return new Permission
             {
-                Key = PermissionKeys.ForRequestType(requestTypeId,actionCode),
+                Key = PermissionKeys.ForAction(requestTypeId, code),
                 DisplayName = $"{requestType} - {action}",
-                RequestTypeId = requestTypeId,
+                GroupName = requestType,
                 Kind = PermissionKind.RequestType,
+                RequestTypeId = requestTypeId,
+                WorkFlowActionId = actionId,
                 ActionCode = code,
                 ActionTitle = action
             };
         }
 
-        public void RenameRequestType(string requestTypeTitle)
+        public void RenameRequestType(string newRequestTypeTitle)
         {
             if (Kind != PermissionKind.RequestType)
-                throw new InvalidOperationException("Only request type permissions can be renamed this way.");
-            if (string.IsNullOrWhiteSpace(requestTypeTitle))
-                throw new ArgumentException("Request type title is required.", nameof(requestTypeTitle));
+                throw new DomainException("Only workflow permissions can be renamed this way.");
+            if (string.IsNullOrWhiteSpace(newRequestTypeTitle))
+                throw new DomainException("Request type title is required.");
 
-            GroupName = requestTypeTitle.Trim();
+            GroupName = newRequestTypeTitle.Trim();
             DisplayName = $"{GroupName} - {ActionTitle}";
         }
 
-        public void UpdateInfo(string displayName,string? groupName = null)
+        public void UpdateInfo(string displayName, string? groupName)
         {
             if (Kind != PermissionKind.Static)
-                throw new InvalidOperationException("Only static permissions can be updated this way.");
+                throw new DomainException("Only static permissions can be updated this way.");
             if (string.IsNullOrWhiteSpace(displayName))
-                throw new ArgumentException("Display name is required.", nameof(displayName));
+                throw new DomainException("Permission display name is required.");
 
             DisplayName = displayName.Trim();
             GroupName = groupName?.Trim();
         }
-        
-        
+
+        public void RenameAction(string newActionTitle)
+        {
+            if (Kind != PermissionKind.RequestType)
+                throw new DomainException("Only workflow permissions can be renamed this way.");
+            if (string.IsNullOrWhiteSpace(newActionTitle))
+                throw new DomainException("Action title is required.");
+
+            ActionTitle = newActionTitle.Trim();
+            DisplayName = $"{GroupName} - {ActionTitle}";
+        }
     }
 }

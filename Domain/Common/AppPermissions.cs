@@ -4,6 +4,18 @@ using System.Text;
 
 namespace Domain.Common
 {
+    public enum PermissionKind
+    {
+        Static = 1,        // defined in code, synced into the table at startup
+        RequestType = 2    // one per workflow action
+    }
+
+    public static class PermissionKeys
+    {
+        public static string ForAction(Guid requestTypeId, string actionCode)
+            => $"RequestType.{requestTypeId:N}.{actionCode}";
+    }
+
     public static class AppPermissions
     {
         public static class Tickets
@@ -14,10 +26,11 @@ namespace Domain.Common
             public const string Assign = "Tickets.Assign";
         }
 
-        public static class  Workflows
+        public static class Workflow
         {
             public const string ManageRequestTypes = "Workflow.ManageRequestTypes";
         }
+
         public static class Users
         {
             public const string View = "Users.View";
@@ -42,7 +55,7 @@ namespace Domain.Common
             new(AppPermissions.Tickets.Close,  "Close tickets",  "Tickets"),
             new(AppPermissions.Tickets.Assign, "Assign tickets", "Tickets"),
 
-            new(AppPermissions.Workflows.ManageRequestTypes, "Manage request types", "Workflow"),
+            new(AppPermissions.Workflow.ManageRequestTypes, "Manage request types", "Workflow"),
 
             new(AppPermissions.Users.View,   "View users",   "Users"),
             new(AppPermissions.Users.Manage, "Manage users", "Users"),

@@ -10,7 +10,6 @@ namespace Application.CommandHandlers.UserCommandHandlers.mapper
             return new UserArgs
             {
                 UserName = dto.UserName,
-                FullName = dto.FullName,
                 PasswordHash = HashedPassword,
                 Email = dto.Email,
                 FirstName = dto.FirstName,
