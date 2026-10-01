@@ -3,6 +3,8 @@ using Domain.Entities.Requests;
 using Domain.Entities.RequestTypes.Args;
 using Domain.Entities.WorkFlowActions;
 using Domain.Entities.WorkFlowSteps;
+using Domain.Entities.WorkFlowStepTransitions;
+using System.Diagnostics;
 
 namespace Domain.Entities.RequestTypes
 {
@@ -38,10 +40,6 @@ namespace Domain.Entities.RequestTypes
             _request.Add(request);
             SetModified();
         }
-        public void RemoveRequest()
-        {
-            _request.Clear();
-        }
         public void Modify(RequestTypeArgs args)
         {
             
@@ -49,14 +47,7 @@ namespace Domain.Entities.RequestTypes
             Description = args.Description;
             SetModified();
         }
-        public void AddStep(WorkFlowStep step)
-        {
-            _steps.Add(step);
-        }
-        public void RemoveStep()
-        {
-            _steps.Clear();
-        }
+
         public void AddAction(WorkFlowAction action)
         {
             AddActionCore(action);
@@ -79,9 +70,62 @@ namespace Domain.Entities.RequestTypes
 
             action.MarkAsDeleted();
         }
+         
+        public void AddStep(WorkFlowStep step)
+        {
+            AddStepCore(step);
+        }
+        public void RemoveStep(Guid StepId)
+        {
+            var step = FindActiveStep(StepId);
+            var validtransitions = _steps.Where(s => !s.IsDeleted)
+                .SelectMany (s => s.transitions)
+                .Where(t => !t.IsDeleted && (t.NextStepId == StepId || t.CurrentStepId == StepId))
+                .ToList();
+            foreach(var transition in validtransitions)
+            {
+                transition.MarkAsDeleted();
+            }
+            step.MarkAsDeleted();
+        }
+        public void AddTransition(WorkFlowStepTransition transition)
+        {
+            if (transition.CurrentStepId == transition.NextStepId)
+            {
+                throw new ArgumentException("This transition has the same start and end point!");
+            }
+            var currentStep = FindActiveStep(transition.CurrentStepId);
+            FindActiveAction(transition.ActionId);
+            FindActiveStep(transition.NextStepId);
+            if (currentStep.transitions.Any(t => !t.IsDeleted && 
+            (t.Id == transition.Id || (t.CurrentStepId == transition.CurrentStepId &&
+            t.NextStepId == transition.NextStepId && t.ActionId == transition.ActionId))))
+            {
+                throw new InvalidOperationException("This transition already exists!");
+            }
+            currentStep.AddTransition(transition);
+        }
+        public void RemoveTransition(Guid transitionId)
+        {
+           if (transitionId == Guid.Empty)
+            {
+                throw new ArgumentException("transition Id cannot be null!");
+            }
+           var alltransitions = _steps.
+                Where(s => !s.IsDeleted)
+                .SelectMany(s => s.transitions)
+                .ToList();
+            var transition = alltransitions.FirstOrDefault(t => t.Id == transitionId) ?? throw new InvalidOperationException("This transition does not exist!");
+            if (alltransitions.Where(t => t.NextStepId == transition.NextStepId).All(t => t.Id == transitionId))
+            {
+                throw new InvalidOperationException("This is the only transition to taget step!");
+            }
+            transition.MarkAsDeleted();
+        }
+        
         private WorkFlowAction FindActiveAction(Guid actionId)
         {
-            var result = _actions.FirstOrDefault(a => a.Id == actionId);
+            var result = _actions.SingleOrDefault(a => a.Id == actionId);
             return result ?? throw new InvalidOperationException("Action not found!");
         }
         private void AddActionCore(WorkFlowAction action)
@@ -101,7 +145,20 @@ namespace Domain.Entities.RequestTypes
             }
             _actions.Add(action);
         }
-        private void AddStepCore (WorkFlowStep step)
+        private WorkFlowStep FindActiveStep(Guid StepId)
+        {
+            if (StepId == Guid.Empty)
+            {
+                throw new ArgumentException("StepId cannot be null!");
+            }
+            if (!_steps.Any(x => !x.IsDeleted && x.Id == StepId))
+            {
+                throw new InvalidOperationException("This step does not exist!");
+            }
+            var result = _steps.SingleOrDefault(x => x.Id == StepId);
+            return result ?? throw new InvalidOperationException("Step no found!");
+        }
+        private void AddStepCore(WorkFlowStep step)
         {
             if (step.RequestTypeId != Id)
             {
@@ -111,10 +168,11 @@ namespace Domain.Entities.RequestTypes
             {
                 throw new InvalidOperationException("This step has already been deleted!");
             }
-            if (_steps.Any(x => x.Id == step.Id))
+            if (_steps.Any(x => !x.IsDeleted && x.Id == step.Id))
             {
                 throw new InvalidOperationException();
             }
+            _steps.Add(step);
         }
     }
 }
