@@ -16,10 +16,30 @@ namespace Infrastructure.ConfigEntites
               .IsRequired()
               .HasMaxLength(100);
 
+            builder.Property(x => x.RowVersion)
+                .IsRowVersion();
+
             builder.Property(x => x.Description)
               .HasMaxLength(500);
 
-            //builder.HasOne(x=>x.RequestType)
+            builder.Ignore(x => x.DomainEvents);
+
+            builder.HasOne(x => x.RequestType)
+                .WithMany(x => x.Requests)
+                .HasForeignKey(x => x.RequestTypeId);
+
+            builder.HasMany(x => x.RequestValues)
+                .WithOne(x => x.Request)
+                .HasForeignKey(x => x.RequestId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x=>x.RequestApproval)
+                .WithOne(x=>x.Request)
+                .HasForeignKey(x=>x.RequestId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+
 
 
         }

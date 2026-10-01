@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Entities.Requests;
 using Domain.Entities.RequestTypes.Args;
 using Domain.Entities.WorkFlowActions;
 using Domain.Entities.WorkFlowSteps;
@@ -13,6 +14,8 @@ namespace Domain.Entities.RequestTypes
         public IReadOnlyCollection<WorkFlowStep> Steps => _steps.AsReadOnly();
         private readonly List<WorkFlowAction> _actions = [];
         public IReadOnlyCollection<WorkFlowAction> Actions => _actions.AsReadOnly();
+        private readonly List<Request> _request = [];
+        public IReadOnlyCollection<Request> Requests => _request.AsReadOnly();
         public int Code { get; private set; }
         public string Description { get; private set; } = string.Empty;
         private RequestType()
@@ -30,14 +33,29 @@ namespace Domain.Entities.RequestTypes
             }
 
         }
+        public void AddRequest(Request request)
+        {
+            _request.Add(request);
+            SetModified();
+        }
+        public void RemoveRequest()
+        {
+            _request.Clear();
+        }
         public void Modify(RequestTypeArgs args)
         {
+            
             Title = args.Title;
             Description = args.Description;
+            SetModified();
         }
         public void AddStep(WorkFlowStep step)
         {
             _steps.Add(step);
+        }
+        public void RemoveStep()
+        {
+            _steps.Clear();
         }
         public void AddAction(WorkFlowAction action)
         {
