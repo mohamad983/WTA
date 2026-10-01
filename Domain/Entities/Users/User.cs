@@ -6,33 +6,45 @@ namespace Domain.Entities.Users
     public class User: BaseEntity
     {
         //public Guid UserId { get; private set; } //primary key
-        public string UserName { get; private set; }
-        public string FullName { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
+        public string UserName { get; private set; } = string.Empty;
+        public string FullName { get; private set; } = string.Empty;
+        public string FirstName { get; private set; } = string.Empty;
+        public string LastName { get; private set; } = string.Empty;
 
-        public string Email { get; private set; }
-        public string PasswordHash { get; private set; }
+        public string Email { get; private set; } = string.Empty;
+        public string PasswordHash { get; private set; } = string.Empty;
         private readonly List<Role> _roles = [];
-        //public byte[] RowVersion { get; private set; } = null!;
-       
         public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
-
-        //public DateTime CreatedAt { get; private set; }
-
-        //public DateTime UpdatedAt { get; private set; }
         private User() { }
 
         public User(UserArgs args)
         {
-            //UserId=Guid.NewGuid();
-            UserName=args.UserName;
-            FullName = args.FullName;
+            if(string.IsNullOrWhiteSpace(args.UserName))
+            {
+                throw new DomainException("User Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.Email))
+            {
+                throw new DomainException("Email is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.FirstName))
+            {
+                throw new DomainException("First Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.LastName))
+            {
+                throw new DomainException("Last Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.PasswordHash))
+            {
+                throw new DomainException("Password Hash is invalid!");
+            }
+            UserName =args.UserName;
             Email=args.Email;
-            FirstName = args.FirstName;
-            LastName = args.LastName;
+            FirstName = args.FirstName.Trim();
+            LastName = args.LastName.Trim();
             PasswordHash = args.PasswordHash;
-            //UpdatedAt = DateTime.UtcNow;
+            FullName = $"{FirstName} {LastName}";
         }
         public static User New(UserArgs args)
         {
@@ -48,46 +60,50 @@ namespace Domain.Entities.Users
         }
         public void Modify(UserArgs args)
         {
+            if(string.IsNullOrWhiteSpace(args.UserName))
+            {
+                throw new DomainException("User Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.Email))
+            {
+                throw new DomainException("Email is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.FirstName))
+            {
+                throw new DomainException("First Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.LastName))
+            {
+                throw new DomainException("Last Name is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.PasswordHash))
+            {
+                throw new DomainException("Password Hash is invalid!");
+            }
             UserName = args.UserName;
-            FullName = args.FullName;
-            FirstName = args.FirstName;
-            Email = args.Email;
-            LastName = args.LastName;
-            SetModified();
+            Email= args.Email;
+            FirstName = args.FirstName.Trim();
+            LastName = args.LastName.Trim();
+            PasswordHash = args.PasswordHash;
+            FullName = $"{FirstName} {LastName}";
         }
-        public void ModifyPassword(string password)
+        public void AssignRole(Role role)
         {
-            PasswordHash = password;
-            SetModified();
-        }
-        public void ModifyEmail(string email)
-        {
-            Email = email;
-            SetModified();
-        }
-        public void ModifyUserName(string userName)
-        {
-            UserName = userName;
-            SetModified();
-        }
-        public void ModifyFirstName(string firstName)
-        {
-            FirstName = firstName;
-            SetModified();
-        }
-        public void ModiftLastName (string lastName)
-        {
-            LastName = lastName;
-            SetModified();
-        }
-        public void AddtoRole(Role role)
-        {
+            ArgumentNullException.ThrowIfNull(role);
+
+            if (role.IsDeleted)
+                throw new DomainException("A deleted role can't be assigned.");
+            if (_roles.Any(r => r.Id == role.Id))
+                return;                               // already assigned
+
             _roles.Add(role);
         }
-        public void RemoveFromRole(Role role)
+        public void RemoveRole(Guid roleId)
         {
+            var role = _roles.SingleOrDefault(r => r.Id == roleId);
+            if (role is null) return;
+
             _roles.Remove(role);
         }
-        //val
     }
 }

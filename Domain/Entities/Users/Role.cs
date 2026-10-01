@@ -23,25 +23,45 @@ namespace Domain.Entities.Users
 
         public Role(RoleArgs args)
         {
+            if (string.IsNullOrWhiteSpace(args.RoleName))
+            {
+                throw new ArgumentException("Role name cannot be empty!");
+            }
+            if (args.RoleImportance < 0)
+            {
+                throw new DomainException("Role importance cant be negative");
+            }
             //RoleId = Guid.NewGuid();
             IsSystem = args.isSystem;
-            RoleName=args.RoleName;
+            RoleName=args.RoleName.Trim();
             RoleImportance=args.RoleImportance;
             //_user.Add(args.User);
         }
 
         public void Modify(RoleArgs args)
         {
-            RoleName = args.RoleName;
+            if (string.IsNullOrWhiteSpace(args.RoleName))
+            {
+                throw new ArgumentException("Role name cannot be empty!");
+            }
+            if (args.RoleImportance < 0)
+            {
+                throw new DomainException("Role importance cant be negative");
+            }
+            RoleName = args.RoleName.Trim();
             RoleImportance = args.RoleImportance;
         }
-        public void AddPermission(Guid permissionId)
+        public void AddRolePermission(RolePermission rolePermission)
         {
-            if (_permissions.Any(p => p.PermissionId == permissionId))
+            if (rolePermission.RoleId != Id)
+            {
+                throw new DomainException("This permission isnt meant for this role!");
+            }
+            if (_permissions.Any(p => p.PermissionId == rolePermission.PermissionId))
             {
                 return;
             }
-            _permissions.Add(new RolePermission(this.Id,permissionId));
+            _permissions.Add(rolePermission);
         }
         public void RemovePermission(Guid permissionId)
         {
@@ -49,10 +69,10 @@ namespace Domain.Entities.Users
             {
                 throw new InvalidOperationException("You cannot take away the permissions of a system admin!");
             }
-            var permission = _permissions.FirstOrDefault(rp => rp.PermissionId == permissionId);
+            var permission = _permissions.SingleOrDefault(rp => rp.PermissionId == permissionId);
             if (permission == null)
             {
-                throw new NotImplementedException();
+                return;
             }
             _permissions.Remove(permission);
         }

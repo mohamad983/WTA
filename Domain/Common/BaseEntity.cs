@@ -44,12 +44,14 @@ namespace Domain.Common
 
         public virtual void MarkAsDeleted(string? deletedBy = null)
         {
+            if (IsDeleted) return;
             IsDeleted = true;
             DeletedAt = DateTime.UtcNow;
             DeletedBy = deletedBy;
         }
         public void Restore()
         {
+            if (!IsDeleted) return;
             IsDeleted = false;
             DeletedAt = null;
             DeletedBy = null;
