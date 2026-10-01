@@ -46,25 +46,21 @@ namespace Domain.Entities.WorkFlowSteps
             ApproverRoleId = args.ApproverRoleId;
             SetModified();
         }
-        public void ModifyTitle(string Title)
+        internal void AddTransition(WorkFlowStepTransition transition)
         {
-            this.Title = Title;
-            SetModified();
+            AddTransitionCore(transition);
         }
-        public void ModifyStepOrder (int stepOrder)
+        private void AddTransitionCore(WorkFlowStepTransition transition)
         {
-            this.StepOrder = stepOrder;
-            SetModified();
-        }
-        public void AddTransaction(WorkFlowStepTransition transition)
-        {
+            if (transition.CurrentStepId != Id)
+            {
+                throw new InvalidOperationException("This transition does not belong to this step!");
+            }
+            if (transition.IsDeleted)
+            {
+                throw new InvalidOperationException("This transition has already been deleted!");
+            }
             _transitions.Add(transition);
-            SetModified();
-        }
-        public void DeleteTransition(WorkFlowStepTransition transition)
-        {
-            _transitions.Remove(transition);
-            SetModified();
         }
     }
 }
