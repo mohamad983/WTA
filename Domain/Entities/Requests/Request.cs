@@ -23,7 +23,7 @@ namespace Domain.Entities.Requests
 
         public RequestType RequestType { get; private set; }
 
-        public int RequestTypeId { get; private set; }
+        public Guid RequestTypeId { get; private set; }
 
         private readonly List<RequestValue> _requestValue = [];
         //public byte[] RowVersion { get; private set; } = null!;

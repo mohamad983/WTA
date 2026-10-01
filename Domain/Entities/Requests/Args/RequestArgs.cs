@@ -10,6 +10,6 @@
 
         public short StatusEnum { get; set; }
 
-        public int RequestTypeId { get;  set; }
+        public Guid RequestTypeId { get;  set; }
     }
 }

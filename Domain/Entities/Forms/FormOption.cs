@@ -15,7 +15,7 @@ namespace Domain.Entities.Forms
 
         public FormInput FormInput { get; private set; } = null!;
 
-        public int FormInputId { get; private set; }
+        public Guid FormInputId { get; private set; }
 
         private FormOption() { }
 

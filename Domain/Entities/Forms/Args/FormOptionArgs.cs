@@ -8,6 +8,6 @@
 
         public FormInput FormInput { get;  set; }
 
-        public int FormInputId { get;  set; }
+        public Guid FormInputId { get;  set; }
     }
 }

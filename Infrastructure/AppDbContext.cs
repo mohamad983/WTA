@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Forms;
 using Domain.Entities.Functions;
+using Domain.Entities.Metadatas;
 using Domain.Entities.Permissions;
 using Domain.Entities.RequestLogs;
 using Domain.Entities.Requests;
@@ -55,6 +56,7 @@ namespace Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Ignore<Metadata>();
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(AppDbContext).Assembly);
         }
