@@ -33,7 +33,7 @@ namespace Application.CommandHandlers.UserCommandHandlers
             var roles = await roleRepo.GetRolesByIdsAsList(request.RoleIds);
             foreach (var role in roles)
             {
-                user.AddRole(role);
+                user.AssignRole(role);
             }
             await userRepo.AddAsync(user, cancellationToken);
             await unitOfWork.SaveChangesAsync();
