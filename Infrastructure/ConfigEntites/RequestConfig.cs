@@ -31,7 +31,12 @@ namespace Infrastructure.ConfigEntites
             builder.HasMany(x => x.RequestValues)
                 .WithOne(x => x.Request)
                 .HasForeignKey(x => x.RequestId)
-                 .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x=>x.RequestApproval)
+                .WithOne(x=>x.Request)
+                .HasForeignKey(x=>x.RequestId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 

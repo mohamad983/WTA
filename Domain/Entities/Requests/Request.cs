@@ -29,6 +29,11 @@ namespace Domain.Entities.Requests
         //public byte[] RowVersion { get; private set; } = null!;
 
         public IReadOnlyCollection<RequestValue> RequestValues => _requestValue.AsReadOnly();
+
+        private readonly List<RequestApproval> _requestApproval = [];
+        //public byte[] RowVersion { get; private set; } = null!;
+
+        public IReadOnlyCollection<RequestApproval> RequestApproval => _requestApproval.AsReadOnly();
         private Request() { }
 
         public Request(RequestArgs args)
@@ -51,6 +56,14 @@ namespace Domain.Entities.Requests
         {
             _requestValue.Clear();
         }
+        public void AddRequestApproval(RequestApproval approval)
+        {
+            _requestApproval.Add(approval);
+        }
+        public void ClearRequestApproval()
+        {
+            _requestApproval.Clear();
+        }
         public void Modify(RequestArgs args)
         {
             Title = args.Title;
@@ -58,6 +71,7 @@ namespace Domain.Entities.Requests
             Description = args.Description;
             StatusEnum = (StatusEnum)args.StatusEnum;
             RequestTypeId = args.RequestTypeId;
+            SetModified();
         }
 
     }
