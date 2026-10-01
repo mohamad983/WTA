@@ -19,7 +19,9 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.Description)
               .HasMaxLength(500);
 
-            builder.HasOne(x=>x.RequestType)
+            builder.HasOne(x => x.RequestType)
+                .WithMany(x => x.Requests)
+                .HasForeignKey(x => x.RequestTypeId);
 
 
         }

@@ -20,6 +20,8 @@ namespace Domain.Entities.Requests
         public StatusEnum StatusEnum { get; private set; }
 
         public RequestType RequestType { get; private set; }
+
+        public int RequestTypeId { get; private set; }
         private Request() { }
 
         public Request(RequestArgs args)
@@ -28,6 +30,7 @@ namespace Domain.Entities.Requests
             Code = args.Code;
             Description = args.Description;
             StatusEnum=(StatusEnum)args.StatusEnum;
+            RequestTypeId = args.RequestTypeId;
         }
         public static Request New(RequestArgs args)
         {
@@ -39,6 +42,7 @@ namespace Domain.Entities.Requests
             Code = args.Code;
             Description = args.Description;
             StatusEnum = (StatusEnum)args.StatusEnum;
+            RequestTypeId = args.RequestTypeId;
         }
 
     }
