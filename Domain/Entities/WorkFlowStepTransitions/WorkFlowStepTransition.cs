@@ -15,6 +15,7 @@ namespace Domain.Entities.WorkFlowStepTransitions
         public WorkFlowStep NextStep { get; private set; } = null!;
         public Guid CurrentStepId { get; private set; }
         public WorkFlowStep CurrentStep { get; private set; } = null!;
+        public Guid ActionId { get; private set; }
         private List<TransitionFunction> _functions = [];
         public IReadOnlyCollection<TransitionFunction> Functions => _functions.AsReadOnly();
         private WorkFlowStepTransition()
@@ -23,13 +24,34 @@ namespace Domain.Entities.WorkFlowStepTransitions
         }
         public WorkFlowStepTransition(WorkFlowStepTransitionArgs Args)
         {
-            NextStepId = Args.NextStep;
-            CurrentStepId = Args.CurrentStep;
+            if (Args.NextStepId == Guid.Empty)
+            {
+                throw new ArgumentException("NextStepId is null!");
+            }
+            if (Args.CurrentStepId == Guid.Empty)
+            {
+                throw new ArgumentException("CurrentStepId is null");
+            }
+            if (Args.ActionId == Guid.Empty)
+            {
+                throw new ArgumentException("ActionId is null!");
+            }
+            NextStepId = Args.NextStepId;
+            CurrentStepId = Args.CurrentStepId;
+            ActionId = Args.ActionId;
         }
         public void Modify(WorkFlowStepTransitionArgs Args)
         {
-            NextStepId = Args.NextStep;
-            CurrentStepId = Args.CurrentStep;
+            if (Args.NextStepId == Guid.Empty)
+            {
+                throw new ArgumentException("NextStepId is null!");
+            }
+            if (Args.CurrentStepId == Guid.Empty)
+            {
+                throw new ArgumentException("CurrentStepId is null");
+            }
+            NextStepId = Args.NextStepId;
+            CurrentStepId = Args.CurrentStepId;
         }
     }
 }

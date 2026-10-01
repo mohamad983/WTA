@@ -24,6 +24,11 @@ namespace Domain.Entities.RequestTypes
             Title = args.Title;
             Description = args.Description;
             Code = args.Code;
+            foreach ( var (code,title) in SystemActions.All)
+            {
+                AddActionCore(new WorkFlowAction(Id, code, title, isSystem: true));
+            }
+
         }
         public void Modify(RequestTypeArgs args)
         {
@@ -36,22 +41,62 @@ namespace Domain.Entities.RequestTypes
         }
         public void AddAction(WorkFlowAction action)
         {
-            _actions.Add(action);
+            AddActionCore(action);
         }
-        private WorkFlowAction CreateAction(string code,string title,bool isSystem)
+        public void RemoveAction(Guid workflowActionId)
         {
-            if (_actions.Any(a => a.Code == code && !a.IsDeleted))
-            {
+            var action = FindActiveAction(workflowActionId);
 
+            if (action.IsSystem)
+            {
+                throw new InvalidOperationException("System Action Cant be removed");
             }
-            var action = new WorkFlowAction(this.Id,code,title,isSystem);
-            _actions.Add(action);
-            return action;
+            var usedByTransition = _steps
+            .Where(s => !s.IsDeleted)
+            .SelectMany(s => s.transitions)
+            .Any(t => !t.IsDeleted && t.ActionId == workflowActionId);
+
+            if (usedByTransition)
+                throw new InvalidOperationException("This action is used by a transition and can't be removed.");
+
+            action.MarkAsDeleted();
         }
         private WorkFlowAction FindActiveAction(Guid actionId)
         {
             var result = _actions.FirstOrDefault(a => a.Id == actionId);
-            return result;
+            return result ?? throw new InvalidOperationException("Action not found!");
+        }
+        private void AddActionCore(WorkFlowAction action)
+        {
+            if (action.RequestTypeId != Id)
+            {
+                throw new InvalidOperationException("This action belongs to a different request type!");
+            }
+            if (action.IsDeleted)
+            {
+                throw new InvalidOperationException("This action has been deleted!");
+            }
+            if (_actions.Any(x => !x.IsDeleted && 
+            (x.Id == action.Id || string.Equals(x.Code,action.Code,StringComparison.OrdinalIgnoreCase))))
+            {
+                throw new InvalidOperationException("This action already exists for this request type!");
+            }
+            _actions.Add(action);
+        }
+        private void AddStepCore (WorkFlowStep step)
+        {
+            if (step.RequestTypeId != Id)
+            {
+                throw new InvalidOperationException("This step already belongs to another request type!");
+            }
+            if (step.IsDeleted)
+            {
+                throw new InvalidOperationException("This step has already been deleted!");
+            }
+            if (_steps.Any(x => x.Id == step.Id))
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }

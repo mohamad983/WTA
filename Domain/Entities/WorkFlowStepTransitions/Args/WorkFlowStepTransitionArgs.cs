@@ -6,7 +6,8 @@ namespace Domain.Entities.WorkFlowStepTransitions.Args
 {
     public class WorkFlowStepTransitionArgs
     {
-        public Guid NextStep {  get; set; }
-        public Guid CurrentStep { get; set; }
+        public Guid NextStepId {  get; set; }
+        public Guid CurrentStepId { get; set; }
+        public Guid ActionId { get; set; }
     }
 }
