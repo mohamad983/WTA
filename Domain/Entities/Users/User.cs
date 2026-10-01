@@ -15,7 +15,7 @@ namespace Domain.Entities.Users
         public string PasswordHash { get; private set; }
         private readonly List<Role> _roles = [];
         //public byte[] RowVersion { get; private set; } = null!;
-
+       
         public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
         //public DateTime CreatedAt { get; private set; }
@@ -27,7 +27,6 @@ namespace Domain.Entities.Users
         {
             //UserId=Guid.NewGuid();
             UserName=args.UserName;
-            _roles.Add(args.Role);
             FullName = args.FullName;
             Email=args.Email;
             FirstName = args.FirstName;
@@ -39,14 +38,20 @@ namespace Domain.Entities.Users
         {
             return new User(args);
         }
-
+        public void AddRole(Role role)
+        {
+            _roles.Add(role);
+        }
+        public void ClearRole(Role role)
+        {
+            _roles.Clear();
+        }
         public void Modify(UserArgs args)
         {
             UserName = args.UserName;
             FullName = args.FullName;
             FirstName = args.FirstName;
             Email = args.Email;
-            _roles.Add(args.Role);
             LastName = args.LastName;
             SetModified();
         }

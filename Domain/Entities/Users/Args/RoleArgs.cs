@@ -1,13 +1,13 @@
-﻿namespace Domain.Entities.Users.Args
-{
-    public class RoleArgs
+﻿    namespace Domain.Entities.Users.Args
     {
-        public string RoleName { get;  set; }
+        public class RoleArgs
+        {
+            public string RoleName { get;  set; }
 
-        public int RoleImportance { get;  set; }
+            public int RoleImportance { get;  set; }
 
-        public User User { get; set; }
-        public bool isSystem {  get; set; }
+            public User User { get; set; }
+            public bool isSystem {  get; set; }
 
+        }
     }
-}

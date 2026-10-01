@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Common
+﻿namespace Domain.Common.RepositoryPattern
 {
     public interface IUnitOfWorkPattern
     {

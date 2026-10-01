@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Infrastructure.Common
+namespace Domain.Common.RepositoryPattern
 {
     public interface IRepositoryPattern<TEntity> where TEntity : class
     {
@@ -8,7 +8,7 @@ namespace Infrastructure.Common
         Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
-       
+
         Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
         Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
         void Update(TEntity entity);
