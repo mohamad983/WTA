@@ -21,25 +21,23 @@ namespace Domain.Entities.Forms
 
         public FormOption(FormOptionArgs args)
         {
-            //FormOptionId=Guid.NewGuid();
-            Label = args.Label;
-            Value = args.Value;
-            FormInput = args.FormInput;
+            if (string.IsNullOrWhiteSpace(args.Label))
+            {
+                throw new DomainException("The label is invalid!");
+            }
+            if (string.IsNullOrWhiteSpace(args.Value))
+            {
+                throw new DomainException("The value is empty!");
+            }
+            if (args.FormInputId == Guid.Empty)
+            {
+                throw new DomainException("The form input id is empty!");
+            }
+            Label = args.Label.Trim();
+            Value = args.Value.Trim();
             FormInputId = args.FormInputId;
         }
-        public static FormOption New(FormOptionArgs args)
-        {
-            return new FormOption(args);
-        }
 
-        public void Modify(FormOptionArgs args)
-        {
-
-            Label = args.Label;
-            Value = args.Value;
-            FormInput = args.FormInput;
-            FormInputId = args.FormInputId;
-        }
 
 
     }
