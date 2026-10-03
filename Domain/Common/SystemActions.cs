@@ -17,5 +17,8 @@ namespace Domain.Common
 
             ];
 
+        public static bool CanBeUsedInTransition(string Code)
+            => !string.Equals(Code, View, StringComparison.OrdinalIgnoreCase);
+
     }
 }

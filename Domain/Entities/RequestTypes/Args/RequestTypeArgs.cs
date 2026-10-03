@@ -7,7 +7,7 @@ namespace Domain.Entities.RequestTypes.Args
 {
     public class RequestTypeArgs
     {
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public int Code { get; set; }
        // public Guid ActionId { get; set; }

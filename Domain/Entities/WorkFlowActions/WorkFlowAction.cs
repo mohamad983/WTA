@@ -23,15 +23,15 @@ namespace Domain.Entities.WorkFlowActions
         {
             if (requestTypeId == Guid.Empty)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Request type Id is required!");
             }
             if (string.IsNullOrWhiteSpace(code) || !CodePattern.IsMatch(code))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The code is invalid!");
             }
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The title is required!");
             }
             RequestTypeId = requestTypeId;
             Code = code.Trim();

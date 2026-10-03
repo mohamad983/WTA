@@ -19,7 +19,6 @@ namespace Infrastructure.ConfigEntites
                 .IsRequired();
             
             builder.Property(rt => rt.Description)
-                .IsRequired()
                 .HasMaxLength(500);
 
             builder.Property(rt => rt.Code)
@@ -29,26 +28,19 @@ namespace Infrastructure.ConfigEntites
 
             builder.Property(rt => rt.Title)
                 .IsRequired()
-                .HasMaxLength(500);
-            builder.HasIndex(rt => rt.Title)
-                .IsUnique();
+                .HasMaxLength(200);
 
             builder.Property(rt => rt.IsDeleted)
                 .IsRequired();
 
             builder.Ignore(x => x.DomainEvents);
 
-            /*builder.Property(rt => rt.LastModifiedAt)
-                .IsRequired();*/
 
             builder.Property(rt => rt.RowVersion)
                 .IsRowVersion();
-
-            builder.HasMany(rt => rt.Steps)
-                .WithOne(wfs => wfs.RequestType)
-                .HasForeignKey(wfs => wfs.RequestTypeId)
-                .OnDelete(DeleteBehavior.Cascade);
             builder.Navigation(x => x.Steps)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(x => x.Actions)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

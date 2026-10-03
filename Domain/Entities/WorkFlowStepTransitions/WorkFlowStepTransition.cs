@@ -42,18 +42,5 @@ namespace Domain.Entities.WorkFlowStepTransitions
             CurrentStepId = Args.CurrentStepId;
             ActionId = Args.ActionId;
         }
-        public void Modify(WorkFlowStepTransitionArgs Args)
-        {
-            if (Args.NextStepId == Guid.Empty)
-            {
-                throw new ArgumentException("NextStepId is null!");
-            }
-            if (Args.CurrentStepId == Guid.Empty)
-            {
-                throw new ArgumentException("CurrentStepId is null");
-            }
-            NextStepId = Args.NextStepId;
-            CurrentStepId = Args.CurrentStepId;
-        }
     }
 }

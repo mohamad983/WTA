@@ -1,4 +1,5 @@
-﻿using Domain.Entities.WorkFlowSteps;
+﻿using Domain.Entities.RequestTypes;
+using Domain.Entities.WorkFlowSteps;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -14,17 +15,13 @@ namespace Infrastructure.ConfigEntites
             builder.ToTable("WorkFlowSteps");
 
             builder.HasKey(x => x.Id);
-            
-            builder.Property(wfs => wfs.ApproverRoleId)
-                .IsRequired();
+
+            builder.Property(x => x.Id).ValueGeneratedNever();
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
             
             builder.Property(x => x.IsDeleted)
-                .IsRequired();
-
-            builder.Property(x => x.RequestTypeId)
                 .IsRequired();
 
             builder.Property(x => x.RowVersion)
@@ -37,15 +34,19 @@ namespace Infrastructure.ConfigEntites
             builder.Property(x => x.StepOrder)
                 .IsRequired();
 
-            builder.Property(x => x.LastModifiedAt)
-                .IsRequired();
+            builder.Property(x => x.Kind)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(20);
+
+            builder.HasIndex(x => new { x.RequestTypeId, x.StepOrder});
             
             builder.Ignore(x => x.DomainEvents);
 
-            builder.HasMany(x => x.transitions)
-                .WithOne(y => y.CurrentStep)
-                .HasForeignKey(y => y.CurrentStepId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<RequestType>(x => x.RequestType)
+                .WithMany(rt => rt.Steps)
+                .HasForeignKey(x => x.RequestTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.ApproverRole)
                 .WithMany()

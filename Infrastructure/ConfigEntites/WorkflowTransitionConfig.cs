@@ -1,4 +1,5 @@
-﻿using Domain.Entities.WorkFlowStepTransitions;
+﻿using Domain.Entities.WorkFlowActions;
+using Domain.Entities.WorkFlowStepTransitions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -14,6 +15,8 @@ namespace Infrastructure.ConfigEntites
             builder.ToTable("WorkflowStepTransitions");
 
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id).ValueGeneratedNever();
 
             builder.Ignore(x => x.DomainEvents);
 
@@ -37,7 +40,7 @@ namespace Infrastructure.ConfigEntites
             builder.HasOne(x => x.CurrentStep)
                 .WithMany(st => st.transitions)
                 .HasForeignKey(x => x.CurrentStepId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.NextStep)
                 .WithMany()
@@ -48,6 +51,15 @@ namespace Infrastructure.ConfigEntites
                 .WithOne(m => m.Transition)
                 .HasForeignKey(m => m.TransitionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<WorkFlowAction>(x => x.Action)
+                .WithMany()
+                .HasForeignKey(x => x.ActionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(x => new { x.CurrentStepId, x.ActionId })
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
 
             builder.Navigation(x => x.Functions)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
