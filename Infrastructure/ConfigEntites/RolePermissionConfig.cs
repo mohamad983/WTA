@@ -22,12 +22,12 @@ namespace Infrastructure.ConfigEntites
             builder.HasOne(x => x.Role)
                 .WithMany(r => r.Permissions)
                 .HasForeignKey(x => x.RoleId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Permission)
                 .WithMany()
                 .HasForeignKey(x => x.PermissionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

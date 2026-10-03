@@ -20,7 +20,7 @@ namespace Infrastructure.ConfigEntites
             builder.Ignore(x => x.DomainEvents);
 
             builder.Property(x => x.Key).IsRequired().HasMaxLength(200);
-            builder.HasIndex(x => x.Key).IsUnique();     // no filter: the sync restores deleted ones
+            builder.HasIndex(x => x.Key).IsUnique();     
 
             builder.Property(x => x.DisplayName).IsRequired().HasMaxLength(300);
             builder.Property(x => x.GroupName).HasMaxLength(300);
@@ -35,7 +35,7 @@ namespace Infrastructure.ConfigEntites
             builder.HasIndex(x => x.RequestTypeId);
             builder.HasIndex(x => x.WorkFlowActionId);
 
-            // Other aggregates are referenced by ID only; no navigation properties.
+           
             builder.HasOne<RequestType>()
                 .WithMany()
                 .HasForeignKey(x => x.RequestTypeId)
