@@ -2,6 +2,7 @@
 using Domain.Entities.Permissions;
 using Domain.Entities.RolePermissions;
 using Domain.Entities.Users.Args;
+using Domain.Entities.Users.Events;
 
 namespace Domain.Entities.Users
 {
@@ -62,6 +63,7 @@ namespace Domain.Entities.Users
                 return;
             }
             _permissions.Add(rolePermission);
+            AddDomainEvent(new RolePermissionsChanged(Id));
         }
         public void RemovePermission(Guid permissionId)
         {
@@ -75,6 +77,7 @@ namespace Domain.Entities.Users
                 return;
             }
             _permissions.Remove(permission);
+            AddDomainEvent(new RolePermissionsChanged(Id));
         }
         public static Role New(RoleArgs args)
         {

@@ -35,6 +35,10 @@ namespace Infrastructure.ConfigEntites
 
             builder.Ignore(x => x.DomainEvents);
 
+            builder.Property(x => x.Status)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(20);
 
             builder.Property(rt => rt.RowVersion)
                 .IsRowVersion();
