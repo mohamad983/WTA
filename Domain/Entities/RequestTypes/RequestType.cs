@@ -91,6 +91,7 @@ namespace Domain.Entities.RequestTypes
 
         public void AddAction(WorkFlowAction action)
         {
+            EnsureDraft();
             AddActionCore(action);
         }
         public void RenameAction(Guid actionId, string title)
@@ -108,6 +109,7 @@ namespace Domain.Entities.RequestTypes
         }
         public void RemoveAction(Guid workflowActionId)
         {
+            EnsureDraft();
             var action = FindActiveAction(workflowActionId);
 
             if (action.IsSystem)
@@ -128,6 +130,7 @@ namespace Domain.Entities.RequestTypes
          
         public void AddStep(WorkFlowStep step)
         {
+            EnsureDraft();
             AddStepCore(step);
         }
         public void ModifyStep(Guid StepId, WorkFlowStepArgs args)
@@ -141,6 +144,7 @@ namespace Domain.Entities.RequestTypes
         }
         public void RemoveStep(Guid StepId)
         {
+            EnsureDraft();
             var step = FindActiveStep(StepId);
             var steptransitions = _steps.Where(s => !s.IsDeleted)
                 .SelectMany(s => s.transitions)
@@ -154,6 +158,7 @@ namespace Domain.Entities.RequestTypes
         }
         public void AddTransition(WorkFlowStepTransition transition)
         {
+            EnsureDraft();
             if (transition.CurrentStepId == transition.NextStepId)
             {
                 throw new ArgumentException("This transition has the same start and end point!");
@@ -183,6 +188,7 @@ namespace Domain.Entities.RequestTypes
         }
         public void RemoveTransition(Guid stepId,Guid transitionId)
         {
+            EnsureDraft();
             if (stepId == Guid.Empty)
             {
                 throw new DomainException("Step Id cannot be empty!");
@@ -298,6 +304,14 @@ namespace Domain.Entities.RequestTypes
                 throw new DomainException("A start step already exists!");
             }
             _steps.Add(step);
+        }
+
+        private void EnsureDraft()
+        {
+            if (Status != RequestTypeStatus.Draft)
+            {
+                throw new DomainException("the WorkFlow Should be in draft to change!");
+            }
         }
     }
 }
